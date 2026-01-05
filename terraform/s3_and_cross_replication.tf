@@ -26,7 +26,7 @@ resource "aws_iam_policy" "s3crossreplicas-policy" {
                 ]
                 Effect = "Allow"
                 Resource = [
-                    "${aws_s3_bucket.bucket.arn}"
+                    "${aws_s3_bucket.bucket-source.arn}"
                 ]
             },
             {
@@ -36,7 +36,7 @@ resource "aws_iam_policy" "s3crossreplicas-policy" {
                 ]
                 Effect = "Allow"
                 Resource = [
-                    "${aws_s3_bucket.bucket.arn}/*"
+                    "${aws_s3_bucket.bucket-source.arn}/*"
                 ]
             },
             {
@@ -46,7 +46,7 @@ resource "aws_iam_policy" "s3crossreplicas-policy" {
                 ]
                 Effect = "Allow"
                 Resource = [
-                    "${aws_s3_bucket.bucket.destination.arn}/*"
+                    "${aws_s3_bucket.bucket-destination.arn}/*"
                 ]  
             }
             ]
@@ -62,20 +62,44 @@ resource "aws_iam_role_policy_attachment" "role-policy-attachment" {
   
 }
 
+#######################################################################################
 ### Replication Destination S3
-resource "aws_s3_bucket" "bucket-destination" {
-    bucket = var.tf-bucket-destination-s3crossreplicas
-    versioning {
-      enabled = true
-    }
-  
-}
+#######################################################################################
 
-### Replication Destination S3
+### Create S3 source bucket
 resource "aws_s3_bucket" "bucket-source" {
     bucket = var.tf-bucket-destination-s3crossreplicas
-    versioning {
-      enabled = true
-    }
-  
+    provider = aws.east-region
+    force_destroy = true  
+}
+
+resource "aws_s3_bucket_acl" "bucket-source-acl" {
+  bucket = aws_s3_bucket.bucket-source.id
+  acl    = "private"
+}
+
+resource "aws_s3_bucket_versioning" "bucket-source-versioning" {
+  bucket = aws_s3_bucket.bucket-source.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+### Create S3 destination bucket
+resource "aws_s3_bucket" "bucket-destination" {
+    bucket = var.tf-bucket-destination-s3crossreplicas
+    provider = aws.west-region
+    force_destroy = true
+}
+
+resource "aws_s3_bucket_acl" "bucket-destination-acl" {
+  bucket = aws_s3_bucket.bucket-destination.id
+  acl    = "private"
+}
+
+resource "aws_s3_bucket_versioning" "bucket-destination-versioning" {
+  bucket = aws_s3_bucket.bucket-destination.id
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
