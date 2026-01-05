@@ -47,5 +47,5 @@ jobs:
             - name: Terraform Plan
               id: plan
               if: github.event_name == 'push'
-              run: terraform plan -no-color -var=$BUCKET_NAME -var=$AWS_ACCOUNT_ID -var-file="terraform.tfvars"
+              run: terraform plan -no-color -var="bucket_name=${{env.BUCKET_NAME}}" -var="aws_account_id=${{env.AWS_ACCOUNT_ID}} -var-file="terraform.tfvars"
               working-directory: ./terraform
