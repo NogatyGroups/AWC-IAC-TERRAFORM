@@ -29,6 +29,10 @@ jobs:
 
             - name: Create TF vars
               run: echo "${{secrets.TERRAFORM_TF_VARS}}" > terraform.tfvars
+            
+            - name: Display terraform.tfvars content
+              run: |
+                cat terraform.tfvars
 
             - name: Terraform Plan
               id: plan
