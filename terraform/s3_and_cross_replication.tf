@@ -32,7 +32,8 @@ resource "aws_iam_policy" "s3crossreplicas-policy" {
             {
                 Action = [
                     "s3:GetObjectVersion",
-                    "s3:GetObjectVersionAcl"
+                    "s3:GetObjectVersionAcl",
+                    "s3:GetObjectVersionForReplication"
                 ]
                 Effect = "Allow"
                 Resource = [
@@ -89,4 +90,25 @@ resource "aws_s3_bucket_versioning" "bucket-destination-versioning" {
   versioning_configuration {
     status = "Enabled"
   }
+}
+
+## Configuration of replication
+resource "aws_s3_bucket_replication_configuration" "replication" {
+    depends_on = [ 
+        aws_s3_bucket_versioning.bucket-destination-versioning,
+        aws_s3_bucket_versioning.bucket-source-versioning
+     ]
+     role = aws_iam_role.s3crossreplicas-role.arn 
+     bucket = aws_s3_bucket.bucket-source.id
+
+     rule {
+       id = "main-replication-rule"
+       status = "Enabled"
+
+       destination {
+         bucket = aws_s3_bucket.bucket-destination.arn 
+         storage_class = "STANDARD"
+       }
+     }
+  
 }
