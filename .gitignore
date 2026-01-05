@@ -24,4 +24,6 @@ terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/6.27.0/window
 
 #git rm -r --cached terraform/.terraform/
 #git rm -r --cached backend_S3/.terraform/
+#git rm -fr --cached .\backend_S3\.terraform.lock.hcl
+#git rm -fr --cached .\terraform\.terraform.lock.hcl
 #git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch backend_S3/.terraform/providers/registry.terraform.io/hashicorp/aws/6.27.0/windows_amd64/terraform-provider-aws_v6.27.0_x5.exe' --prune-empty --tag-name-filter cat -- --all
