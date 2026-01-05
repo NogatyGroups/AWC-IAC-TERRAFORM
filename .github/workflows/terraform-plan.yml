@@ -32,7 +32,7 @@ jobs:
               working-directory: ./terraform
 
             - name: Create TF vars
-              run: echo "${{secrets.TERRAFORM_TF_VARS}}" > terraform.tfvars
+              run: cat <<'EOF'> terraform.tfvars ${{secrets.TERRAFORM_TF_VARS}} EOF
               working-directory: ./terraform
 
             - name: Display terraform.tfvars content
