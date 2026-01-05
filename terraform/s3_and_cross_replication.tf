@@ -73,10 +73,10 @@ resource "aws_s3_bucket" "bucket-source" {
     force_destroy = true  
 }
 
-resource "aws_s3_bucket_acl" "bucket-source-acl" {
-  bucket = aws_s3_bucket.bucket-source.id
-  acl    = "private"
-}
+#resource "aws_s3_bucket_acl" "bucket-source-acl" {
+#  bucket = aws_s3_bucket.bucket-source.id
+#  acl    = "private"
+#}
 
 resource "aws_s3_bucket_versioning" "bucket-source-versioning" {
   bucket = aws_s3_bucket.bucket-source.id
@@ -100,10 +100,11 @@ resource "aws_s3_bucket" "bucket-destination" {
     force_destroy = true
 }
 
-resource "aws_s3_bucket_acl" "bucket-destination-acl" {
-  bucket = aws_s3_bucket.bucket-destination.id
-  acl    = "private"
-}
+# Ressource chnager depuis avril à supprimer
+#resource "aws_s3_bucket_acl" "bucket-destination-acl" {
+#  bucket = aws_s3_bucket.bucket-destination.id
+#  acl    = "private"
+#}
 
 resource "aws_s3_bucket_versioning" "bucket-destination-versioning" {
   bucket = aws_s3_bucket.bucket-destination.id
