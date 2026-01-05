@@ -1,0 +1,17 @@
+# Local directory
+terraform/.terraform
+backend_S3/.terraform
+
+# Terraform state files
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/*.tfvars
+terraform/.terraform.lock.hcl
+
+backend_S3/*.tfstate
+backend_S3/*.tfstate.backup
+backend_S3/*.tfvars
+backend_S3/.terraform.lock.hcl
+
+#git rm -r --cached terraform/.terraform/
+#git rm -r --cached backend_S3/.terraform/
