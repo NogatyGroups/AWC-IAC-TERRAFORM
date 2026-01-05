@@ -36,7 +36,9 @@ jobs:
 
             - name: Create TF vars
               run: |
-                echo "${{ vars.TERRAFORM_TF_VARS }}" > terraform.tfvars
+                cat << 'EOF' > terraform.tfvars
+                ${{ vars.TERRAFORM_TF_VARS }}
+                EOF
               working-directory: ./terraform
 
             - name: Display terraform.tfvars content
