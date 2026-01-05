@@ -54,9 +54,3 @@ jobs:
               if: github.event_name == 'push'
               run: terraform plan -var-file="terraform.tfvars"
               working-directory: ./terraform
-        
-            - name: Terraform Destory
-              id: destroy
-              if: github.event_name == 'push'
-              run: terraform destroy --auto-approve
-              working-directory: ./terraform
