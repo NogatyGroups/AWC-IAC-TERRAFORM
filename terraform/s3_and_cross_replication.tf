@@ -72,50 +72,21 @@ resource "aws_s3_bucket" "bucket-source" {
     provider = aws.east-region
     force_destroy = true  
 }
-
-resource "aws_s3_bucket_acl" "bucket-source-acl" {
-  bucket = aws_s3_bucket.bucket-source.id
-  acl    = "private"
-}
-
 resource "aws_s3_bucket_versioning" "bucket-source-versioning" {
   bucket = aws_s3_bucket.bucket-source.id
   versioning_configuration {
     status = "Enabled"
   }
 }
-
-resource "aws_s3_bucket_public_access_block" "bucket-source-public-access-block" {
-  bucket = aws_s3_bucket.bucket-source.id
-  block_public_acls   = true
-  block_public_policy = true
-  ignore_public_acls  = true
-  restrict_public_buckets = true
-}
-
 ### Create S3 destination bucket
 resource "aws_s3_bucket" "bucket-destination" {
     bucket = var.tf-bucket-destination-s3crossreplicas
     provider = aws.west-region
     force_destroy = true
 }
-
-resource "aws_s3_bucket_acl" "bucket-destination-acl" {
-  bucket = aws_s3_bucket.bucket-destination.id
-  acl    = "private"
-}
-
 resource "aws_s3_bucket_versioning" "bucket-destination-versioning" {
   bucket = aws_s3_bucket.bucket-destination.id
   versioning_configuration {
     status = "Enabled"
   }
-}
-
-resource "aws_s3_bucket_public_access_block" "bucket-destination-public-access-block" {
-  bucket = aws_s3_bucket.bucket-destination.id
-  block_public_acls   = true
-  block_public_policy = true
-  ignore_public_acls  = true
-  restrict_public_buckets = true
 }
