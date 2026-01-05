@@ -4,7 +4,7 @@ on:
     push:
         branches:
             - features/development
-            - ! main
+            - '!main'
 
 env:
     AWS_ACCESS_KEY_ID: ${{secrets.AWS_SECRET_ID }}
@@ -24,19 +24,24 @@ jobs:
             - name: Terraform Init
               id: init
               run: terraform init
+              working-directory: ./terraform
 
             - name: Terraform Format
               id: fmt
               run: terraform fmt -recursive
+              working-directory: ./terraform
 
             - name: Create TF vars
               run: echo "${{secrets.TERRAFORM_TF_VARS}}" > terraform.tfvars
+              working-directory: ./terraform
 
             - name: Display terraform.tfvars content
               run: |
                 cat terraform.tfvars
-                
+              working-directory: ./terraform
+
             - name: Terraform Plan
               id: plan
               if: github.event_name == 'push'
               run: terraform plan -no-color -var-file="terraform.tfvars"
+              working-directory: ./terraform
