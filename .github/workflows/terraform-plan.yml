@@ -1,0 +1,35 @@
+name: Terraform plan and recursive
+run-name: "Terraform plan and recursive @${{github.actor}}, event: ${{github.event_name}}"
+on:
+    push:
+        branches:
+            - features/development
+            - ! main
+
+env:
+    AWS_ACCESS_KEY_ID: ${{secrets.AWS_KEY_ID }}
+    AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_KEY }}
+    AWS_REGION: ${{vars.AWS_REGION}}
+jobs:
+    Terraform_plan_and_recursive:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v6
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v3
+              with:
+                terraform_version: "1.1.7"
+
+            - name: Terraform Init
+              id: init
+              run: terraform init
+
+            - name: Terraform Format
+              id: fmt
+              run: terraform fmt -recursive
+
+            - name: Terraform Plan
+              id: plan
+              if: github.event_name == 'push'
+              run: terraform plan -no-color
