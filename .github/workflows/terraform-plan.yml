@@ -44,6 +44,11 @@ jobs:
                 cat terraform.tfvars
               working-directory: ./terraform
 
+            - name: Terraform Validate
+              id: validate
+              run: terraform validate
+              working-directory: ./terraform
+
             - name: Terraform Plan
               id: plan
               if: github.event_name == 'push'
