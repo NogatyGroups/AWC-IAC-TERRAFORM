@@ -65,6 +65,6 @@ jobs:
 
             - name: Terraform Destory
               id: destroy
-              if: github.event_name == 'workflow_dispatch' 
+              if: github.event_name == 'workflow_dispatch' || cancelled()
               run: terraform destroy --auto-approve
               working-directory: ./terraform
