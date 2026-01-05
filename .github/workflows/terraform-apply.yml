@@ -9,7 +9,7 @@ env:
     AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_KEY }}
     AWS_REGION: ${{vars.AWS_REGION}}
 jobs:
-    Terraform_plan_and_recursive:
+    Terraform_Apply_Infra_release:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
@@ -43,7 +43,7 @@ jobs:
 
             - name: Terraform Plan
               id: plan
-              if: github.event_name == 'push'
+              if: github.event_name == 'pull_request'
               run: terraform plan -no-color -var-file="terraform.tfvars"
               continue-on-error: true
               working-directory: ./terraform
