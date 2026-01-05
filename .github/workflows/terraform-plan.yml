@@ -37,7 +37,7 @@ jobs:
             - name: Create TF vars
               run: |
                 cat << 'EOF' > terraform.tfvars
-                ${{ vars.TERRAFORM_TF_VARS }}
+                ${{ secrets.TERRAFORM_TF_VARS }}
                 EOF
               working-directory: ./terraform
 
@@ -49,5 +49,5 @@ jobs:
             - name: Terraform Plan
               id: plan
               if: github.event_name == 'push'
-              run: terraform plan -var="bucket_name=${{env.BUCKET_NAME}}" -var="aws_account_id=${{env.AWS_ACCOUNT_ID}} -var-file="terraform.tfvars"
+              run: terraform plan -var-file="terraform.tfvars"
               working-directory: ./terraform
