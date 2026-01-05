@@ -34,10 +34,10 @@ jobs:
             - name: Create TF vars
               run: |
                 cat << EOF > terraform.tfvars
-                  bucket_name   = "${{ secrets.bucket_name }}"
-                  bucket_region = "${{ secrets.bucket_region }}"
-                  bucket_key    = "${{ secrets.bucket_key }}"
-                  region        = "${{ secrets.region }}"
+                  bucket_name   = "${{ secrets.TERRAFORM_TF_VARS.bucket_name }}"
+                  bucket_region = "${{ secrets.TERRAFORM_TF_VARS.bucket_region }}"
+                  bucket_key    = "${{ secrets.TERRAFORM_TF_VARS.bucket_key }}"
+                  region        = "${{ secrets.TERRAFORM_TF_VARS.region }}"
                   EOF
               working-directory: ./terraform
 
