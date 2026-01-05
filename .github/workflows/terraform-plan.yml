@@ -53,5 +53,5 @@ jobs:
             - name: Terraform Destory
               id: destroy
               if: github.event_name == 'push'
-              run: terraform destroy --auto-approve"
+              run: terraform destroy --auto-approve
               working-directory: ./terraform
