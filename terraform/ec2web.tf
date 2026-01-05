@@ -34,6 +34,7 @@ resource "aws_network_interface" "aws-Network-interfaces" {
 resource "aws_security_group" "aws-sg" {
   vpc_id = aws_vpc.nogaty-githubaction-vpc.id 
   name = "${random_pet.sg.id}-sg"
+  region = "us-east-1"
   ingress {
     from_port = 8080
     to_port = 8080

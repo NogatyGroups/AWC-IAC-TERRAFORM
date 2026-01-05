@@ -68,7 +68,7 @@ resource "aws_iam_role_policy_attachment" "role-policy-attachment" {
 
 ### Create S3 source bucket
 resource "aws_s3_bucket" "bucket-source" {
-    bucket = var.tf-bucket-destination-s3crossreplicas
+    bucket = var.tf-bucket-source-s3crossreplicas
     provider = aws.east-region
     force_destroy = true  
 }

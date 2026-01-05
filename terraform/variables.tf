@@ -28,8 +28,16 @@ variable "tf-s3crossreplicas-policy" {
   type = string
   default = "s3crossreplicas-policy"
 }
+
+variable "tf-bucket-source-s3crossreplicas" {
+  type = string
+  default = "nogaty-source-bucket"
+  
+}
+
 variable "tf-bucket-destination-s3crossreplicas" {
   type = string
   default = "nogaty-cross-replicas"
   
 }
+
