@@ -85,6 +85,14 @@ resource "aws_s3_bucket_versioning" "bucket-source-versioning" {
   }
 }
 
+resource "aws_s3_bucket_public_access_block" "bucket-source-public-access-block" {
+  bucket = aws_s3_bucket.bucket-source.id
+  block_public_acls   = true
+  block_public_policy = true
+  ignore_public_acls  = true
+  restrict_public_buckets = true
+}
+
 ### Create S3 destination bucket
 resource "aws_s3_bucket" "bucket-destination" {
     bucket = var.tf-bucket-destination-s3crossreplicas
@@ -102,4 +110,12 @@ resource "aws_s3_bucket_versioning" "bucket-destination-versioning" {
   versioning_configuration {
     status = "Enabled"
   }
+}
+
+resource "aws_s3_bucket_public_access_block" "bucket-destination-public-access-block" {
+  bucket = aws_s3_bucket.bucket-destination.id
+  block_public_acls   = true
+  block_public_policy = true
+  ignore_public_acls  = true
+  restrict_public_buckets = true
 }
