@@ -53,6 +53,7 @@ resource "aws_instance" "nogaty-ec2-vpc-a" {
     instance_type = "t3.micro"
     key_name = aws_key_pair.nogaty-keys.key_name
     subnet_id = aws_subnet.public-subnet-a[count.index].id
+    depends_on = [ aws_subnet.public-subnet-a ]
     tags = {
       Name = "NogatyEC2VPC-A-${count.index}"
     }
@@ -66,7 +67,7 @@ resource "aws_instance" "nogaty-ec2-vpc-b" {
     key_name = aws_key_pair.nogaty-keys.key_name
     subnet_id = aws_subnet.public-subnet-b[count.index].id
     instance_type = "t3.micro"
-
+    depends_on = [ aws_subnet.public-subnet-b ]
     tags = {
       Name = "NogatyEC2VPC-B-${count.index}"
     }
