@@ -125,9 +125,6 @@ variable "cidr-block-b" {
 #  type = string
 #}
 
-#variable "vpc-name" {
-#  type = string
-#}
 
 variable "pub-sub-name-a" {
   type = string
@@ -168,7 +165,7 @@ variable "pub-availability-zone-a" {
 
 variable "pub-availability-zone-b" {
   type = list(string)
-  default = [ "eu-central-1a","eu-central-1c","eu-central-1c" ]
+  default = [ "eu-central-1a","eu-central-1b","eu-central-1c" ]
 }
 
 variable "pri-sub-name-a" {
@@ -205,7 +202,7 @@ variable "pri-availability-zone-a" {
 
 variable "pri-availability-zone-b" {
   type = list(string)
-  default = [ "eu-central-1a","eu-central-1c","eu-central-1c" ]
+  default = [ "eu-central-1a","eu-central-1b","eu-central-1c" ]
 }
 
 variable "public-rta-name" {
