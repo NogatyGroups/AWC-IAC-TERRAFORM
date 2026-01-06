@@ -29,7 +29,7 @@ data "aws_ami" "ubuntu-b" {
   }
 }
 
-resource "aws_instance" "nogaty-ec2-vpc-b" {
+resource "aws_instance" "nogaty-ec2-vpc-a" {
     provider = aws.vpc-a
     ami           = data.aws_ami.ubuntu-a.id
     instance_type = "t3.micro"
