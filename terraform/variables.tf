@@ -170,12 +170,12 @@ variable "pub-availability-zone-b" {
 
 variable "pri-sub-name-a" {
   type = string
-  default = "Private-subnet-a"
+  default = "Private-subnet-A"
   
 }
 variable "pri-sub-name-b" {
   type = string
-  default = "Private-subnet-b"
+  default = "Private-subnet-B"
 }
 variable "pri-subnet-count-a" {
   type = number
