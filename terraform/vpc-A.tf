@@ -28,6 +28,7 @@ resource "aws_vpc" "vpc-a" {
 ### Create public subnet A
 resource "aws_subnet" "public-subnet-a" {
     count = var.pub-subnet-count-a
+    provider = aws.vpc-a
     vpc_id = aws_vpc.vpc-a.id
     cidr_block = element(var.pub-cidr-block-a, count.index)
     availability_zone = element(var.pub-availability-zone-a, count.index)
@@ -42,6 +43,7 @@ resource "aws_subnet" "public-subnet-a" {
 
 ### Create internet gateway
 resource "aws_internet_gateway" "igw-a" {
+  provider = aws.vpc-a
   vpc_id = aws_vpc.vpc-a.id 
   tags = {
     Name = var.igw-vpca
@@ -54,6 +56,7 @@ resource "aws_internet_gateway" "igw-a" {
 
 ### Create private subnet A 
 resource "aws_subnet" "private-subnet-a" {
+    provider = aws.vpc-a
     count = var.pri-subnet-count-a
     vpc_id = aws_vpc.vpc-a.id 
     cidr_block = element(var.pri-cidr-block-a, count.index)
@@ -70,6 +73,7 @@ resource "aws_subnet" "private-subnet-a" {
 
 ### Create public route table
 resource "aws_route_table" "public-rt-a" {
+  provider = aws.vpc-a
   vpc_id = aws_vpc.vpc-a.id 
   route {
     cidr_block = "0.0.0.0/0"
@@ -84,6 +88,7 @@ resource "aws_route_table" "public-rt-a" {
 
 ### Associate public route table to public subnet A and B
 resource "aws_route_table_association" "public-rta-association" {
+  provider = aws.vpc-a
   count = 3
   route_table_id = aws_route_table.public-rt-a.id 
   subnet_id = aws_subnet.public-subnet-a[count.index].id 
@@ -93,6 +98,7 @@ resource "aws_route_table_association" "public-rta-association" {
 
 #### Create Elastic IP for Nat Gateway
 #resource "aws_eip" "ngw-eip-a" {
+#  provider = aws.vpc-a
 #  domain = "vpc-a"
 #  tags = {
 #    Name = var.eip-name-a
@@ -104,6 +110,7 @@ resource "aws_route_table_association" "public-rta-association" {
 #
 #### Create Nat Gateway A 
 #resource "aws_nat_gateway" "ngw-a" {
+#    provider = aws.vpc-a
 #    allocation_id = aws_eip.ngw-eip-a.id
 #    subnet_id = aws_subnet.public-subnet-a[0].id
 #    tags = {
@@ -116,6 +123,7 @@ resource "aws_route_table_association" "public-rta-association" {
 
 #### Create Private route table A 
 #resource "aws_route_table" "private-rta" {
+#  provider = aws.vpc-a
 #  vpc_id = aws_vpc.vpc-a.id 
 #  route {
 #    cidr_block = "0.0.0.0/0"
@@ -132,6 +140,7 @@ resource "aws_route_table_association" "public-rta-association" {
 #
 #### Associate private route table with private subnet A 
 #resource "aws_route_table_association" "private-rta-association" {
+#    provider = aws.vpc-a
 #    count = 3 
 #    route_table_id = aws_route_table.private-rta.id 
 #    subnet_id = aws_subnet.private-subnet-a[count.index].id
@@ -141,6 +150,7 @@ resource "aws_route_table_association" "public-rta-association" {
 
 ### Create securitty group A 
 resource "aws_security_group" "security-sg-a" {
+    provider = aws.vpc-a
     name = var.sg-a-name
     description = "Allow ssh from jump server only"
     vpc_id = aws_vpc.vpc-a.id 
