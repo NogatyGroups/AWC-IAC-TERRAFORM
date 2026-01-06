@@ -30,6 +30,7 @@ resource "aws_vpc" "vpc-b" {
 resource "aws_subnet" "public-subnet-b" {
     count = var.pub-subnet-count-b
     vpc_id = aws_vpc.vpc-b.id
+    provider = aws.vpc-b
     cidr_block = element(var.pub-cidr-block-b, count.index)
     availability_zone = element(var.pub-availability-zone-b, count.index)
     map_public_ip_on_launch = true 
@@ -43,6 +44,7 @@ resource "aws_subnet" "public-subnet-b" {
 
 
 resource "aws_internet_gateway" "igw-b" {
+  provider = aws.vpc-b
   vpc_id = aws_vpc.vpc-b.id 
   tags = {
     Name = var.igw-vpcb
@@ -55,6 +57,7 @@ resource "aws_internet_gateway" "igw-b" {
 
 ### Create private subnet B
 resource "aws_subnet" "private-subnet-b" {
+    provider = aws.vpc-b
     count = var.pri-subnet-count-b
     vpc_id = aws_vpc.vpc-b.id 
     cidr_block = element(var.pri-cidr-block-b, count.index)
@@ -71,6 +74,7 @@ resource "aws_subnet" "private-subnet-b" {
 
 ### Create public route table B
 resource "aws_route_table" "public-rt-b" {
+  provider = aws.vpc-b
   vpc_id = aws_vpc.vpc-b.id 
   route {
     cidr_block = "0.0.0.0/0"
@@ -85,6 +89,7 @@ resource "aws_route_table" "public-rt-b" {
 
 ### Associate public route table to public subnet B
 resource "aws_route_table_association" "public-rtb-association" {
+  provider = aws.vpc-b
   count = var.pub-subnet-count-b
   route_table_id = aws_route_table.public-rt-b.id 
   subnet_id = aws_subnet.public-subnet-b[count.index].id 
@@ -95,6 +100,7 @@ resource "aws_route_table_association" "public-rtb-association" {
 
 #### Create Elastic IP for Nat Gateway B
 #resource "aws_eip" "ngw-eip-b" {
+#  provider = aws.vpc-b    
 #  domain = "vpc-b"
 #  tags = {
 #    Name = var.eip-name-b
@@ -103,6 +109,7 @@ resource "aws_route_table_association" "public-rtb-association" {
 #}
 
 #resource "aws_nat_gateway" "ngw-b" {
+#    provider = aws.vpc-b
 #    allocation_id = aws_eip.ngw-eip-b.id
 #    subnet_id = aws_subnet.public-subnet-b[0].id
 #    tags = {
@@ -113,6 +120,7 @@ resource "aws_route_table_association" "public-rtb-association" {
 
 #### Create Private route table B
 #resource "aws_route_table" "private-rtb" {
+#  provider = aws.vpc-b
 #  vpc_id = aws_vpc.vpc-b.id 
 #  route {
 #    cidr_block = "0.0.0.0/0"
@@ -129,6 +137,7 @@ resource "aws_route_table_association" "public-rtb-association" {
 #### Associate private route table with private subnet B
 #resource "aws_route_table_association" "private-rtb-association" {
 #    count = 3 
+#    provider = aws.vpc-b
 #    route_table_id = aws_route_table.private-rtb.id 
 #    subnet_id = aws_subnet.private-subnet-b[count.index].id
 #    depends_on = [ aws_vpc.vpc-b, aws_subnet.private-subnet-b ]
@@ -137,6 +146,7 @@ resource "aws_route_table_association" "public-rtb-association" {
 ### Create securitty group B
 resource "aws_security_group" "security-sg-b" {
     name = var.sg-b-name
+    provider = aws.vpc-b
     description = "Allow shh from jump server only"
     vpc_id = aws_vpc.vpc-b.id 
 
