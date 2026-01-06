@@ -72,5 +72,23 @@ resource "aws_iam_role_policy_attachment" "lambda-role-policy-attachment" {
 # Create Lambda function
 ###################################################################################
 resource "aws_lambda_function" "lambda-nodejs" {
-    fu
+  filename      = data.archive_file.init.output_path
+  function_name = var.lambda-nodejs-function
+  role          = aws_iam_role.lambda-iam-role.arn
+  handler       = "index.handler"
+  code_sha256   = data.archive_file.init.output_base64sha256
+
+  runtime = "nodejs20.x"
+
+  environment {
+    variables = {
+      ENVIRONMENT = "development"
+      LOG_LEVEL   = "info"
+    }
+  }
+
+  tags = {
+    Environment = "development"
+    Application = "lambda-nodejs-function"
+  }
 }
