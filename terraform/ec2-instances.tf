@@ -49,7 +49,7 @@ resource "aws_instance" "nogaty-ec2-vpc-a" {
     count = 1
     provider = aws.vpc-a
     region = var.region-eu
-    ami           = data.aws_ami.ubuntu-a.id
+    ami           = var.ec2-ami-a
     instance_type = "t3.micro"
     key_name = aws_key_pair.nogaty-keys-a.key_name
     subnet_id = aws_subnet.public-subnet-a[count.index].id
@@ -69,7 +69,7 @@ resource "aws_instance" "nogaty-ec2-vpc-b" {
     count = 1
     provider = aws.vpc-b
     region = var.region-eu
-    ami           = data.aws_ami.ubuntu-b.id
+    ami           = var.ec2-ami-b
     key_name = aws_key_pair.nogaty-keys-b.key_name
     subnet_id = aws_subnet.public-subnet-b[count.index].id
     instance_type = "t3.micro"
