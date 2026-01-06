@@ -22,7 +22,7 @@ resource "aws_iam_policy" "s3crossreplicas-policy" {
     name = var.tf-s3crossreplicas-policy
     description = "Allows S3 replication between primary and secondary buckets"
     policy = jsonencode({
-        Version = "20212-10-17"
+        Version = "2012-10-17"
         Statement = [
             {
                 Action = [
@@ -35,11 +35,6 @@ resource "aws_iam_policy" "s3crossreplicas-policy" {
                 ]
             },
             {
-                #Action = [
-                #    "s3:GetObjectVersion",
-                #    "s3:GetObjectVersionAcl",
-                #    "s3:GetObjectVersionForReplication"
-                #]
                 Action   = [
                      "s3:ReplicateObject", 
                      "s3:ReplicateDelete", 
