@@ -2,6 +2,11 @@ name: Terraform destroy Infra-release
 run-name: "Terraform destroy Infra-release @${{github.actor}}, event: ${{github.event_name}}"
 on:
     workflow_dispatch:
+      inputs:
+        confirm_destroy:
+          description: "Type 'yes' to confirm destruction"
+          required: true
+          default: "no"
 env:
     AWS_ACCESS_KEY_ID: ${{secrets.AWS_SECRET_ID }}
     AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_KEY }}
@@ -58,8 +63,18 @@ jobs:
               continue-on-error: true
               working-directory: ./terraform
 
+            - name: Check Destroy Confirmation
+              id: check_destroy
+              if: github.event_name == 'workflow_dispatch'
+              run: |
+                if [ "${{ github.event.inputs.confirm_destroy }}" != "yes" ]; then
+                  echo "Destruction not confirmed. Exiting."
+                  exit 1
+                fi
+              working-directory: ./terraform
+
             - name: Terraform Destory
               id: destroy
-              if: github.event_name == 'workflow_dispatch'
+              if: github.event_name == 'workflow_dispatch' && steps.check_destroy.outcome == 'success'
               run: terraform destroy --auto-approve
               working-directory: ./terraform
