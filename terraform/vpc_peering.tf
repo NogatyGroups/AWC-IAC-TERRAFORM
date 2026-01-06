@@ -128,7 +128,7 @@ resource "aws_subnet" "public-subnet-a" {
         Name = "${var.pub-sub-name-a}-${count.index +1 }"
         Env = var.env 
     }
-    depends_on = [ aws_vpc.vpc, ]
+    depends_on = [ aws_vpc.vpc-a, ]
   
 }
 
@@ -188,36 +188,36 @@ resource "aws_route_table" "public-rt-a" {
     Name = var.public-rta-name 
     env = var.env
   }
-  depends_on = [ aws_vpc.vpc ]
+  depends_on = [ aws_vpc.vpc-a ]
 }
 
 resource "aws_route_table" "public-rt-b" {
   vpc_id = aws_vpc.vpc-b.id 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway-b.igw.id
+    gateway_id = aws_internet_gateway.igw-b.id
   }
   tags = {
     Name = var.public-rtb-name 
     env = var.env
   }
-  depends_on = [ aws_vpc.vpc ]
+  depends_on = [ aws_vpc.vpc-b ]
 }
 
 ### Associate public route table to public subnet A and B
 resource "aws_route_table_association" "public-rta-association" {
   count = 3
-  route_table_id = aws_route_table.public-rta.id 
+  route_table_id = aws_route_table.public-rt-a.id 
   subnet_id = aws_subnet.public-subnet-a[count.index].id 
-  depends_on = [ aws_vpc-a.vpc, aws_subnet.public-subnet-a ]
+  depends_on = [ aws_vpc.vpc-a, aws_subnet.public-subnet-a ]
 }
 
 
 resource "aws_route_table_association" "public-rtb-association" {
   count = 3
-  route_table_id = aws_route_table.public-rtb.id 
+  route_table_id = aws_route_table.public-rt-b.id 
   subnet_id = aws_subnet.public-subnet-b[count.index].id 
-  depends_on = [ aws_vpc-b.vpc, aws_subnet.public-subnet-b ]
+  depends_on = [ aws_vpc.vpc-b, aws_subnet.public-subnet-b ]
 }
 
 
