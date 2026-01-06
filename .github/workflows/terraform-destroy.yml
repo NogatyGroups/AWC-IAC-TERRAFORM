@@ -1,0 +1,80 @@
+name: Terraform destroy Infra-release
+run-name: "Terraform destroy Infra-release @${{github.actor}}, event: ${{github.event_name}}"
+on:
+    workflow_dispatch:
+      inputs:
+        confirm_destroy:
+          description: "Type 'yes' to confirm destruction"
+          required: true
+          default: "no"
+env:
+    AWS_ACCESS_KEY_ID: ${{secrets.AWS_SECRET_ID }}
+    AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_KEY }}
+    AWS_REGION: ${{vars.AWS_REGION}}
+jobs:
+    Terraform_Apply_Infra_release:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v6
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v3
+              with:
+                terraform_version: "1.1.7"
+
+            - name: Terraform Init
+              id: init
+              run: terraform init
+              working-directory: ./terraform
+
+            - name: Terraform Format
+              id: fmt
+              run: terraform fmt -recursive
+              working-directory: ./terraform
+
+            - name: Create TF vars
+              run: |
+                cat << 'EOF' > terraform.tfvars
+                ${{ secrets.TERRAFORM_TF_VARS }}
+                EOF
+              working-directory: ./terraform
+            
+            - name: Display terraform.tfvars content
+              run: |
+                cat terraform.tfvars
+              working-directory: ./terraform
+
+            - name: Terraform Plan
+              id: plan
+              if: github.event_name == 'pull_request'
+              run: terraform plan -no-color -var-file="terraform.tfvars"
+              continue-on-error: true
+              working-directory: ./terraform
+
+            - name: Terraform Plan Status
+              if:  github.event_name == 'pull_request' && steps.plan.outcome == 'failure'
+              run: exit 1
+              working-directory: ./terraform
+
+            - name: Terraform Apply
+              id: apply
+              if: github.ref == 'refs/heads/main' && github.event_name == 'push' 
+              run: terraform apply -var-file="terraform.tfvars" --auto-approve
+              continue-on-error: true
+              working-directory: ./terraform
+
+            - name: Check Destroy Confirmation
+              id: check_destroy
+              if: github.event_name == 'workflow_dispatch'
+              run: |
+                if [ "${{ github.event.inputs.confirm_destroy }}" != "yes" ]; then
+                  echo "Destruction not confirmed. Exiting."
+                  exit 1
+                fi
+              working-directory: ./terraform
+
+            - name: Terraform Destory
+              id: destroy
+              if: github.event_name == 'workflow_dispatch' && steps.check_destroy.outcome == 'success'
+              run: terraform destroy --auto-approve
+              working-directory: ./terraform
