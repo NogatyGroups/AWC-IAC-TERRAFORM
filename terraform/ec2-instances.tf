@@ -36,6 +36,23 @@ data "aws_ami" "ubuntu-b" {
   owners = ["amazon"] 
 }
 
+
+data "aws_ami" "amazon_linux_2" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-2.0.*-x86_64-gp2"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["137112412989"] 
+}
+
 ################################################################################################
 # Create ssh key
 ################################################################################################
@@ -49,7 +66,7 @@ resource "aws_instance" "nogaty-ec2-vpc-a" {
     count = 1
     provider = aws.vpc-a
     region = var.region-eu
-    ami           = var.ec2-ami-a
+    ami           = data.aws_ami.amazon_linux_2.id
     instance_type = "t3.micro"
     key_name = aws_key_pair.nogaty-keys-a.key_name
     subnet_id = aws_subnet.public-subnet-a[count.index].id
