@@ -21,7 +21,7 @@ resource "aws_s3_bucket" "nogaty-bucket-lambda" {
 
 ### Upload zip file to S3 bucket
 resource "aws_s3_object" "object" {
-  bucket = aws_s3_bucket.lambda_bucket.bucket
+  bucket = aws_s3_bucket.nogaty-bucket-lambda.bucket
   key    = "hello.zip"
   source = data.archive_file.lambda_zip.output_path
   etag   = data.archive_file.lambda_zip.output_base64sha256
