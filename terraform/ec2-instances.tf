@@ -33,17 +33,20 @@ data "aws_ami" "ubuntu-b" {
 
 resource "aws_instance" "nogaty-ec2-vpc-a" {
     provider = aws.vpc-a
+    region = var.region-eu
     ami           = data.aws_ami.ubuntu-a.id
     instance_type = "t3.micro"
-
+    subnet_id = aws_subnet.public-subnet-a.id
     tags = {
       Name = "nogaty-ec2-vpc-a"
     }
 }
 
 resource "aws_instance" "nogaty-ec2-vpc-b" {
-    provider = aws.vpc-a
+    provider = aws.vpc-b
+    region = var.region-eu
     ami           = data.aws_ami.ubuntu-b.id
+    subnet_id = aws_subnet.public-subnet-b.id
     instance_type = "t3.micro"
 
     tags = {
