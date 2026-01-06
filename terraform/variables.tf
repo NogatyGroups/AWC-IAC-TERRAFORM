@@ -62,3 +62,21 @@ variable "peering-vpc-name" {
   type = string
   default = "Nogaty-Peering-VPC"
 }
+
+variable "env" {
+  type = string
+  default = "Production"
+  
+}
+
+variable "igw-vpca" {
+  type = string
+  default = "igw-vpca"
+  
+}
+
+variable "igw-vpcb" {
+  type = string
+  default = "igw-vpcb"
+  
+}
