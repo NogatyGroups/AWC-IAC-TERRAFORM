@@ -267,3 +267,13 @@ variable "lambda-bucket" {
   type = string
   default = "lambda-nodejs-s3-bucket-"
 }
+
+variable "lambda-iam-role" {
+  type = string
+  default = "lambda-iam-role"
+}
+
+variable "lambda-iam-policy" {
+  type = string 
+  default = "lambda-iam-policy"
+}
