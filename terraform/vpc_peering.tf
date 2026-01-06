@@ -7,7 +7,7 @@ provider "aws" {
 }
 
 provider "aws" {
-    region = "us-west-1"
+    region = "eu-central-1"
     alias = "vpc-b"
   
 }
@@ -35,7 +35,7 @@ resource "aws_vpc" "vpc-b" {
     enable_dns_hostnames = true
     enable_dns_support = true
     tags = {
-      Name = var.nogaty-us-west-vpc
+      Name = var.nogaty-eu-central-vpc
     }
 }
 

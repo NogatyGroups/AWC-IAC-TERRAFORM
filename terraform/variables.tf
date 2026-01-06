@@ -47,14 +47,14 @@ variable "nogaty-us-east-vpc" {
   default = "nogaty-us-east-vpc"
 }
 
-variable "nogaty-us-west-vpc" {
+variable "nogaty-eu-central-vpc" {
   type = string
-  default = "nogaty-us-west-vpc"
+  default = "nogaty-eu-central-vpc"
 }
 
 variable "peer-region" {
   type = string
-  default = "us-west-1"
+  default = "eu-central-1"
   
 }
 
@@ -144,7 +144,7 @@ variable "pub-availability-zone-a" {
 
 variable "pub-availability-zone-b" {
   type = list(string)
-  default = [ "us-west-1a","us-west-1c","us-west-1c" ]
+  default = [ "eu-central-1a","eu-central-1c","eu-central-1c" ]
 }
 
 variable "pri-sub-name-a" {
@@ -181,7 +181,7 @@ variable "pri-availability-zone-a" {
 
 variable "pri-availability-zone-b" {
   type = list(string)
-  default = [ "us-west-1a","us-west-1c","us-west-1c" ]
+  default = [ "eu-central-1a","eu-central-1c","eu-central-1c" ]
 }
 
 variable "public-rta-name" {
