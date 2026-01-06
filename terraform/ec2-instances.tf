@@ -40,18 +40,18 @@ data "aws_ami" "ubuntu-b" {
 # Create ssh key
 ################################################################################################
 ## Create keypaire
-resource "aws_key_pair" "nogaty-keys" {
+resource "aws_key_pair" "nogaty-keys-a" {
+  provider = aws.vpc-a
   key_name   = var.key_pair.name
   public_key = var.key_pair.public_key
 }
-
 resource "aws_instance" "nogaty-ec2-vpc-a" {
     count = 1
     provider = aws.vpc-a
     region = var.region-eu
     ami           = data.aws_ami.ubuntu-a.id
     instance_type = "t3.micro"
-    key_name = aws_key_pair.nogaty-keys.key_name
+    key_name = aws_key_pair.nogaty-keys-a.key_name
     subnet_id = aws_subnet.public-subnet-a[count.index].id
     depends_on = [ aws_subnet.public-subnet-a ]
     tags = {
@@ -59,12 +59,18 @@ resource "aws_instance" "nogaty-ec2-vpc-a" {
     }
 }
 
+
+resource "aws_key_pair" "nogaty-keys-b" {
+  provider = aws.vpc-b
+  key_name   = var.key_pair.name
+  public_key = var.key_pair.public_key
+}
 resource "aws_instance" "nogaty-ec2-vpc-b" {
     count = 1
     provider = aws.vpc-b
     region = var.region-eu
     ami           = data.aws_ami.ubuntu-b.id
-    key_name = aws_key_pair.nogaty-keys.key_name
+    key_name = aws_key_pair.nogaty-keys-b.key_name
     subnet_id = aws_subnet.public-subnet-b[count.index].id
     instance_type = "t3.micro"
     depends_on = [ aws_subnet.public-subnet-b ]
