@@ -26,17 +26,6 @@ resource "aws_vpc" "vpc-b" {
 ##########################################################################################################
 # CREATE SUBNETS
 ##########################################################################################################
-
-resource "aws_internet_gateway" "igw-b" {
-  vpc_id = aws_vpc.vpc-b.id 
-  tags = {
-    Name = var.igw-vpcb
-    env = var.env 
-  }
-  depends_on = [ aws_vpc.vpc-b ]
-}
-
-
 ### Create public subnet B
 resource "aws_subnet" "public-subnet-b" {
     count = var.pub-subnet-count-b
@@ -48,9 +37,21 @@ resource "aws_subnet" "public-subnet-b" {
         Name = "${var.pub-sub-name-b}-${count.index +1 }"
         Env = var.env 
     }
-    depends_on = [ aws_vpc.vpc-b, ]
+    depends_on = [ aws_vpc.vpc-b ]
   
 }
+
+
+resource "aws_internet_gateway" "igw-b" {
+  vpc_id = aws_vpc.vpc-b.id 
+  tags = {
+    Name = var.igw-vpcb
+    env = var.env 
+  }
+  depends_on = [ aws_vpc.vpc-b ]
+}
+
+
 
 ### Create private subnet B
 resource "aws_subnet" "private-subnet-b" {
@@ -63,10 +64,9 @@ resource "aws_subnet" "private-subnet-b" {
         Name = "${var.pri-sub-name-b}-${count.index + 1}"
         Env = var.env 
     }
-    depends_on = [ aws_vpc.vpc-b, ]
+    depends_on = [ aws_vpc.vpc-b]
   
 }
-
 
 
 ### Create public route table B
@@ -80,15 +80,15 @@ resource "aws_route_table" "public-rt-b" {
     Name = var.public-rtb-name 
     env = var.env
   }
-  depends_on = [ aws_vpc.vpc-b ]
+  depends_on = [ aws_vpc.vpc-b, aws_internet_gateway.igw-b ]
 }
 
 ### Associate public route table to public subnet B
 resource "aws_route_table_association" "public-rtb-association" {
-  count = 3
+  count = var.pub-subnet-count-b
   route_table_id = aws_route_table.public-rt-b.id 
   subnet_id = aws_subnet.public-subnet-b[count.index].id 
-  depends_on = [ aws_vpc.vpc-b, aws_subnet.public-subnet-b ]
+  depends_on = [ aws_vpc.vpc-b, aws_subnet.public-subnet-b, aws_route_table.public-rt-b ]
 }
 
 
@@ -137,7 +137,7 @@ resource "aws_route_table_association" "public-rtb-association" {
 ### Create securitty group B
 resource "aws_security_group" "security-sg-b" {
     name = var.sg-b-name
-    description = "Allow 443 from jump server only"
+    description = "Allow shh from jump server only"
     vpc_id = aws_vpc.vpc-b.id 
 
     ingress {
@@ -152,9 +152,12 @@ resource "aws_security_group" "security-sg-b" {
         protocol = "-1"
         cidr_blocks = ["0.0.0.0/0"]
     }
+
+    depends_on = [ aws_vpc.vpc-b ]
     
     tags = {
       Name = var.sg-b-name
     }
+
     
 }
