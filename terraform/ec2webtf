@@ -54,10 +54,7 @@ resource "aws_security_group" "aws-sg" {
 resource "aws_instance" "NogatyWeb" {
     ami = "ami-068c0051b15cdb816"
     instance_type = "t3.micro"
-    network_interface {
-      network_interface_id = aws_network_interface.aws-Network-interfaces.id
-      device_index = 0
-    }
+    subnet_id = aws_subnet.nogaty-githubaction-subnet.id
     tags = {
       Name = "NogatyWeb"
     }
