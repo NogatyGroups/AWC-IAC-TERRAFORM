@@ -11,6 +11,7 @@ data "aws_ami" "ubuntu-a" {
     name   = "virtualization-type"
     values = ["hvm"]
   }
+  owners = ["amazon"] 
 }
 
 
@@ -27,6 +28,7 @@ data "aws_ami" "ubuntu-b" {
     name   = "virtualization-type"
     values = ["hvm"]
   }
+  owners = ["amazon"] 
 }
 
 resource "aws_instance" "nogaty-ec2-vpc-a" {
