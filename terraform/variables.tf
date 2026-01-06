@@ -277,3 +277,8 @@ variable "lambda-iam-policy" {
   type = string 
   default = "lambda-iam-policy"
 }
+
+variable "lambda-nodejs-function" {
+  type = string
+  default = "lambda-nodejs"
+}

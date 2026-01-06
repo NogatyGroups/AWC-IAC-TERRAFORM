@@ -1,5 +1,8 @@
+###################################################################################
+# Zip a function
+###################################################################################
 ## Zip the function to be run at function App
-data "archive_file" "init" {
+data "archive_file" "lambda_zip" {
     type = "zip"
     source_file = "${path.module}/Projet-nodejs/hello.js"
     output_path = "${path.module}/hello.zip"
@@ -18,10 +21,10 @@ resource "aws_s3_bucket" "nogaty-bucket-lambda" {
 
 ### Upload zip file to S3 bucket
 resource "aws_s3_object" "object" {
-  bucket = "${var.lambda-bucket}-01"
+  bucket = aws_s3_bucket.nogaty-bucket-lambda.bucket
   key    = "hello.zip"
-  source = "${path.module}/hello.zip"
-  etag   = filemd5("${path.module}/hello.zip")
+  source = data.archive_file.lambda_zip.output_path
+  etag   = data.archive_file.lambda_zip.output_base64sha256
 }
 
 ###################################################################################
@@ -72,5 +75,27 @@ resource "aws_iam_role_policy_attachment" "lambda-role-policy-attachment" {
 # Create Lambda function
 ###################################################################################
 resource "aws_lambda_function" "lambda-nodejs" {
-    fu
+  filename      = data.archive_file.lambda_zip.output_path
+  function_name = var.lambda-nodejs-function
+  role          = aws_iam_role.lambda-iam-role.arn
+  handler       = "index.handler"
+  code_sha256   = data.archive_file.lambda_zip.output_base64sha256
+
+  runtime = "nodejs20.x"
+
+  environment {
+    variables = {
+      ENVIRONMENT = "development"
+      LOG_LEVEL   = "info"
+    }
+  }
+
+  tags = {
+    Environment = "development"
+    Application = "lambda-nodejs-function"
+  }
 }
+
+######################################################################################
+# A revoir: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function
+#######################################################################################
