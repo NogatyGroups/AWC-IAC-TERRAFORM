@@ -62,3 +62,171 @@ variable "peering-vpc-name" {
   type = string
   default = "Nogaty-Peering-VPC"
 }
+
+
+
+##############################################################################################
+# 
+##############################################################################################
+variable "env" {
+  type = string
+  default = "Production"
+  
+}
+
+variable "igw-vpca" {
+  type = string
+  default = "igw-vpca"
+  
+}
+
+variable "igw-vpcb" {
+  type = string
+  default = "igw-vpcb"
+  
+}
+
+variable "cidr-block-a" {
+  type = string
+  default= "10.1.0.0/16"
+}
+
+variable "cidr-block-b" {
+  type = string
+  default= "192.168.0.0/16"
+}
+
+
+#variable "instance-tenancy" {
+#  type = string
+#}
+
+#variable "vpc-name" {
+#  type = string
+#}
+
+variable "pub-sub-name-a" {
+  type = string
+  default = "Public-subnet-A"
+}
+
+variable "pub-sub-name-b" {
+  type = string
+  default = "Public-subnet-B"
+}
+
+variable "pub-subnet-count-a" {
+  type = number
+  default = 3
+}
+
+variable "pub-subnet-count-b" {
+  type = number
+  default = 3
+}
+
+variable "pub-cidr-block-a" {
+    type = list(string)
+    default = [ "10.1.1.0/24","10.1.2.0/24", "10.1.3.0/24" ]
+  
+}
+
+variable "pub-cidr-block-b" {
+    type = list(string)
+    default = [ "192.168.1.0/24","192.168.2.0/24", "192.168.3.0/24" ]
+  
+}
+
+variable "pub-availability-zone-a" {
+  type = list(string)
+  default = [ "us-east-1a","us-east-1b","us-east-1c" ]
+}
+
+variable "pub-availability-zone-b" {
+  type = list(string)
+  default = [ "us-west-1a","us-west-1c","us-west-1c" ]
+}
+
+variable "pri-sub-name-a" {
+  type = string
+  default = "Private-subnet-a"
+  
+}
+variable "pri-sub-name-b" {
+  type = string
+  default = "Private-subnet-b"
+}
+variable "pri-subnet-count-a" {
+  type = number
+  default = 3
+}
+variable "pri-subnet-count-b" {
+  type = number
+  default = 3
+}
+
+
+variable "pri-cidr-block-a" {
+    type = list(string)
+  default = [ "10.1.10.0/24","10.1.11.0/24", "10.1.12.0/24" ]
+}
+variable "pri-cidr-block-b" {
+    type = list(string)
+    default = [ "192.168.10.0/24","192.168.11.0/24", "192.168.12.0/24" ]
+}
+variable "pri-availability-zone-a" {
+  type = list(string)
+  default = [ "us-east-1a","us-east-1b","us-east-1c" ]
+}
+
+variable "pri-availability-zone-b" {
+  type = list(string)
+  default = [ "us-west-1a","us-west-1c","us-west-1c" ]
+}
+
+variable "public-rta-name" {
+  type = string
+  default = "public-rta-name"
+}
+
+variable "public-rtb-name" {
+  type = string
+  default = "public-rtb-name"
+}
+
+variable "eip-name-a" {
+  type = string
+  default = "Elastic IP A"
+}
+
+variable "eip-name-b" {
+  type = string
+  default = "Elastic IP B"
+}
+
+variable "ngw-name-a" {
+  type = string
+  default = "Nat Gateway A"
+}
+variable "ngw-name-b" {
+  type = string
+  default = "Nat Gateway B"
+}
+variable "private-rta-name" {
+  type = string
+  default = "private-rta-name"
+}
+variable "private-rtb-name" {
+  type = string
+  default = "private-rtb-name"
+}
+
+variable "sg-a-name" {
+  type = string
+  default = "Security-grp-A"
+}
+
+variable "sg-b-name" {
+  type = string
+  default = "Security-grp-B"
+}
