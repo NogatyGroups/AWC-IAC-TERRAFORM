@@ -12,7 +12,7 @@ resource "aws_vpc" "nogaty-us-east-vpc" {
 
 ## Create VPC B
 resource "aws_vpc" "nogaty-us-west-vpc" {
-  cidr_block = "192.168.0/16"
+  cidr_block = "192.168.0.0/16"
   tags = {
     Name = var.nogaty-us-west-vpc
   }
