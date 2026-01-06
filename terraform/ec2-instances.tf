@@ -36,25 +36,6 @@ data "aws_ami" "ubuntu-b" {
   owners = ["amazon"] 
 }
 
-
-data "aws_ami" "amazon_linux_2" {
-  provider = aws.vpc-a
-  most_recent = true
-
-  filter {
-    name   = "name"
-    #values = ["amzn2-ami-hvm-2.0.*-x86_64-gp2"]
-    values = ["amzn2-ami-hvm-2.0.20251027.1-x86_64-gp2"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["amazon"] 
-}
-
 ################################################################################################
 # Create ssh key
 ################################################################################################
