@@ -252,3 +252,13 @@ variable "sg-b-name" {
   type = string
   default = "Security-grp-B"
 }
+
+variable "ec2-ami-a" {
+  type = string
+  default = "ami-0ecb62995f68bb549"
+}
+
+variable "ec2-ami-b" {
+  type = string
+  default = "ami-004e960cde33f9146"
+}
