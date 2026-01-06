@@ -52,7 +52,7 @@ data "aws_ami" "amazon_linux_2" {
     values = ["hvm"]
   }
 
-  owners = ["137112412989"] 
+  owners = ["amazon"] 
 }
 
 ################################################################################################
@@ -68,7 +68,7 @@ resource "aws_instance" "nogaty-ec2-vpc-a" {
     count = 1
     provider = aws.vpc-a
     region = var.region-eu
-    ami           = data.aws_ami.amazon_linux_2.id
+    ami           = var.ec2-ami-a
     instance_type = "t3.micro"
     key_name = aws_key_pair.nogaty-keys-a.key_name
     subnet_id = aws_subnet.public-subnet-a[count.index].id

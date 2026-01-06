@@ -255,10 +255,15 @@ variable "sg-b-name" {
 
 variable "ec2-ami-a" {
   type = string
-  default = "ami-0ecb62995f68bb549"
+  default = "ami-068c0051b15cdb816"
 }
 
 variable "ec2-ami-b" {
   type = string
   default = "ami-004e960cde33f9146"
+}
+
+variable "lambda-bucket" {
+  type = string
+  default = "lambda-nodejs-s3-bucket-"
 }
