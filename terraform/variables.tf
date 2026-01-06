@@ -58,11 +58,6 @@ variable "peer-region" {
   
 }
 
-variable "peer-owner-id" {
-  type = string
-  default = "712487951697nogatya"
-}
-
 variable "peering-vpc-name" {
   type = string
   default = "Nogaty-Peering-VPC"
