@@ -68,6 +68,16 @@ variable "peering-vpc-name" {
 ##############################################################################################
 # 
 ##############################################################################################
+variable "region-us" {
+  type = string
+  default = "us-east-1"
+}
+
+variable "region-eu" {
+  type = string
+  default = "eu-central-1"
+}
+
 variable "env" {
   type = string
   default = "Production"
