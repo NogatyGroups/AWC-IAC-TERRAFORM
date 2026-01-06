@@ -3,7 +3,7 @@
 ##############################################################################################
 
 provider "aws" {
-  region              = var.region
+  region              = var.providers_region
   allowed_account_ids = [var.aws_account_id]
 }
 
