@@ -41,7 +41,7 @@ resource "aws_subnet" "public-subnet-a" {
         Name = "${var.pub-sub-name-a}-${count.index +1 }"
         Env = var.env 
     }
-    depends_on = [ aws_vpc.vpc-a, ]
+    depends_on = [ aws_vpc.vpc-a ]
   
 }
 
@@ -68,7 +68,7 @@ resource "aws_subnet" "private-subnet-a" {
         Name = "${var.pri-sub-name-a}-${count.index + 1}"
         Env = var.env 
     }
-    depends_on = [ aws_vpc.vpc-a, ]
+    depends_on = [ aws_vpc.vpc-a ]
   
 }
 
@@ -84,7 +84,7 @@ resource "aws_route_table" "public-rt-a" {
     Name = var.public-rta-name 
     env = var.env
   }
-  depends_on = [ aws_vpc.vpc-a ]
+  depends_on = [ aws_vpc.vpc-a , aws_internet_gateway.igw-a]
 }
 
 ### Associate public route table to public subnet A and B
@@ -92,7 +92,7 @@ resource "aws_route_table_association" "public-rta-association" {
   count = 3
   route_table_id = aws_route_table.public-rt-a.id 
   subnet_id = aws_subnet.public-subnet-a[count.index].id 
-  depends_on = [ aws_vpc.vpc-a, aws_subnet.public-subnet-a ]
+  depends_on = [ aws_vpc.vpc-a, aws_subnet.public-subnet-a, aws_route_table.public-rt-a ]
 }
 
 
@@ -162,7 +162,7 @@ resource "aws_security_group" "security-sg-a" {
         protocol = "-1"
         cidr_blocks = ["0.0.0.0/0"]
     }
-    
+    depends_on = [ aws_vpc.vpc-a ]
     tags = {
       Name = var.sg-a-name
     }
