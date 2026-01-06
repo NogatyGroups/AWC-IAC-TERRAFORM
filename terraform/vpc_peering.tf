@@ -17,7 +17,7 @@ provider "aws" {
 # VPC PEERING
 ##########################################################################################################
 ## Create VPC A 
-resource "aws_vpc" "nogaty-us-east-vpc" {
+resource "aws_vpc" "vpc-a" {
     provider = aws.vpc-a
     cidr_block = var.cidr-block-a
     enable_dns_hostnames = true
@@ -29,7 +29,7 @@ resource "aws_vpc" "nogaty-us-east-vpc" {
 
 
 ## Create VPC B
-resource "aws_vpc" "nogaty-us-west-vpc" {
+resource "aws_vpc" "vpc-b" {
     provider = aws.vpc-b
     cidr_block = var.cidr-block-b
     enable_dns_hostnames = true
@@ -46,8 +46,8 @@ locals {
 resource "aws_vpc_peering_connection" "vpc_peering" {
   peer_owner_id = local.peer-owner-id
   peer_region = var.peer-region
-  peer_vpc_id = aws_vpc.nogaty-us-west-vpc.id 
-  vpc_id = aws_vpc.nogaty-us-east-vpc.id
+  peer_vpc_id = aws_vpc.vpc-b.id 
+  vpc_id = aws_vpc.vpc-a.id
   auto_accept = false
   tags = {
     Name = var.peering-vpc-name
