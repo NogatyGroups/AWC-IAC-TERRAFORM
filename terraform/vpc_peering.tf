@@ -35,10 +35,12 @@ resource "aws_vpc" "nogaty-us-west-vpc" {
     }
 }
 
-
+locals {
+  peer-owner-id = var.aws_account_id
+}
 ### Create Peering between VPC-A and VPC-B
 resource "aws_vpc_peering_connection" "vpc_peering" {
-  peer_owner_id = var.peer-owner-id
+  peer_owner_id = local.peer-owner-id
   peer_region = var.peer-region
   peer_vpc_id = aws_vpc.nogaty-us-west-vpc.id 
   vpc_id = aws_vpc.nogaty-us-east-vpc.id
