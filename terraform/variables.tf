@@ -84,6 +84,20 @@ variable "env" {
   
 }
 
+
+variable "key_pair" {
+  type = object({
+    name = string,
+    public_key = string
+  })
+  default = {
+    name = "Nogaty-Devops-Key",
+    public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC2crmyOLf9AgG2xvPQ/joZkFLMm2Hpq378Pboy4Y/J5+qPiwhEbnMR20e7hNKoxPnMi3H2dawgHwW+CCQwi6ZF0xCxxo2veAdaK3XuENQq9JKinqgl1DePqklLYpzRTXeSkS7uSxXmkp/VQt2p+EL2tg1NE91VYSEcLoUGncwmTEknzvoHDWoHRGsToPZyi1rubt/nROTKEU4dmt0zzftkyFo3C1ndX1swpE0w08x2Qq2iF1V/eHmkpeaAu4d7ofbCfezE+8f6CphCZ0tjC3EZxs/si7CTyKt9njWWuC5cHIjJrPVrOatB4JoV4nVO3qMy8yfU+j4A0KYMvMUdE796FRNYcmgNVIRELMBVJy2DS0/rM3UAPRFI+mFf8wvcEbzXD2mrJ7BUdsLxAt2VSxZ12YYT44hvbXdzdCSFFsiuC+DpW9ZfvgDRcMCA0N+K3VORLMBD9yWv9mg/VjGkM7bU90E4PKIlFRVvF43exZ9rGBfmtwf/7QWOBMu1Jrmgkls= Nogaty-devops-key"
+  }
+}
+
+
+
 variable "igw-vpca" {
   type = string
   default = "igw-vpca"
